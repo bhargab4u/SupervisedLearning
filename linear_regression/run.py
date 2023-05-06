@@ -1,9 +1,9 @@
-import LinearRegrerssion
+import LinearRegression as LinearRegression
+import numpy as np
 
 
 def run():
-    # LinearRegrerssion.Linearregression.compute_model_output()
-    LinearRegrerssion.Linearregression.compute_cost()
+    LinearRegression.Linearregression.calculate_linear_regression()
 
 
 if __name__ == "__main__":
