@@ -12,6 +12,7 @@ def calculate_cost():
     # print(data.iloc[0]["Price"], data.iloc[0]["SqFt"])
     # plt.show()
     # print(df.Price.values)
+    # print(df.Price.values)
     m = len(data)
     w = 0.0
     b = 0.0
