@@ -6,18 +6,14 @@ import math
 
 def calculate_cost():
     data = pd.read_csv("data.csv")
-    # print(df)
-    # data = df.to_numpy()
-    # print(arr)
-    # print(data.iloc[0]["Price"], data.iloc[0]["SqFt"])
-    # plt.show()
-    # print(df.Price.values)
-    # print(df.Price.values)
-    m = len(data)
+    data = data.astype({"SqFt": "float64", "Price": "float64"})
+    # data_normalized = data.copy(deep=True)
+    data["Price"] = data["Price"].div(10000).round(4)
+    data["SqFt"] = data["SqFt"].div(100).round(2)
     w = 0.0
     b = 0.0
-    alpha = 0.0001
-    epochs = 300
+    alpha = 0.001
+    epochs = 3000
 
     for k in range(epochs):
         if k % 100 == 0:
@@ -25,6 +21,11 @@ def calculate_cost():
         w, b = gradient_descent(w, b, data, alpha)
 
     print(w, b)
+    plot(data, w, b)
+
+
+def plot(data, w, b):
+    m = len(data)
     f_x = np.zeros(m)
     x = np.zeros(m)
     for i in range(m):
@@ -44,7 +45,7 @@ def gradient_descent(w_init, b_init, points, alpha):  # alpha is learning rate
         x = points.iloc[i]["SqFt"]
         y = points.iloc[i]["Price"]
         f_x = w_init * x + b_init
-        if math.isnan(f_x):
+        if math.isnan(f_x) or math.isinf(f_x):
             print(f"x:{x}, y:{y}, f_x:{f_x}")
             break
 
@@ -52,9 +53,10 @@ def gradient_descent(w_init, b_init, points, alpha):  # alpha is learning rate
         b_sum_diff += f_x - y
 
     w_now = w_init - (alpha * (w_sum_diff)) / m
+    w_now = round(w_now, 2)
     b_now = b_init - (alpha * (b_sum_diff)) / m
 
-    if math.isnan(w_now) or math.isnan(b_now):
+    if math.isnan(w_now) or math.isinf(w_now) or math.isinf(b_now) or math.isnan(b_now):
         print(f"w_init : {w_init}, w_now: {w_now}, b_init: {b_init}, b_now: {b_now}")
         return 0, 0
 
