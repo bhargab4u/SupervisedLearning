@@ -5,11 +5,11 @@ import math
 
 
 def calculate_cost():
-    data = pd.read_csv("data.csv")
+    data = pd.read_csv("house-prices.csv")
     data = data.astype({"SqFt": "float64", "Price": "float64"})
     # data_normalized = data.copy(deep=True)
-    data["Price"] = data["Price"].div(10000).round(4)
-    data["SqFt"] = data["SqFt"].div(100).round(2)
+    data["Price"] = data["Price"].div(100000).round(4)
+    data["SqFt"] = data["SqFt"].div(1000).round(2)
     w = 0.0
     b = 0.0
     alpha = 0.001
