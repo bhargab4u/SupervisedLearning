@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import math
 
 
-def calculate_cost():
+def linear_regression():
     data = pd.read_csv("house-prices.csv")
     data = data.astype(
         {
@@ -28,8 +28,8 @@ def calculate_cost():
     J_cost_history = []
     w = np.zeros(x_train.shape[1])
     b = 0.0
-    alpha = 0.00001
-    epochs = 8000
+    alpha = 0.0001
+    epochs = 3000
 
     for k in range(epochs):
         if k % 100 == 0:
@@ -46,9 +46,9 @@ def compute_cost(x_train, y_train, w, b):
     m = x_train.shape[0]
     cost = 0.0
     for i in range(m):
-        f_wb_i = np.dot(x_train[i], w) + b  # (n,)(n,) = scalar (see np.dot)
-        cost = cost + (f_wb_i - y_train[i]) ** 2  # scalar
-    cost = cost / (2 * m)  # scalar
+        f_wb_i = np.dot(x_train[i], w) + b
+        cost = cost + (f_wb_i - y_train[i]) ** 2
+    cost = cost / (2 * m)
     return cost
 
 
@@ -68,10 +68,10 @@ def plot(x_train, y_train, w, b):
 
 
 def plot_cost(cost_arr):
-    plt.plot(cost_arr, range(len(cost_arr)), c="b")
+    plt.plot(range(len(cost_arr)), cost_arr, c="b")
     plt.title("Cost Function")
-    plt.xlabel("Cost")
-    plt.ylabel("Iterations")
+    plt.ylabel("Cost")
+    plt.xlabel("Iterations")
     plt.show()
 
 

@@ -4,28 +4,32 @@ import matplotlib.pyplot as plt
 import math
 
 
-def calculate_cost():
+def linear_regression():
     data = pd.read_csv("house-prices.csv")
     data = data.astype({"SqFt": "float64", "Price": "float64"})
     # data_normalized = data.copy(deep=True)
-    data["Price"] = data["Price"].div(100000).round(4)
-    data["SqFt"] = data["SqFt"].div(1000).round(2)
+    data["Price"] = data["Price"].div(10000).round(4)
+    data["SqFt"] = data["SqFt"].div(100).round(2)
+    J_cost_history = []
     w = 0.0
     b = 0.0
     alpha = 0.001
     epochs = 3000
 
     for k in range(epochs):
-        if k % 100 == 0:
+        if k % 1000 == 0:
             print(f"Epochs : {k}")
         w, b = gradient_descent(w, b, data, alpha)
+        J_cost_history.append(compute_cost(data, w, b))
 
     print(w, b)
-    plot(data, w, b)
+    # plot(data, w, b)
+    plot_cost(J_cost_history)
 
 
 def plot(data, w, b):
     m = len(data)
+    print(f"m : {m}")
     f_x = np.zeros(m)
     x = np.zeros(m)
     for i in range(m):
@@ -61,3 +65,25 @@ def gradient_descent(w_init, b_init, points, alpha):  # alpha is learning rate
         return 0, 0
 
     return w_now, b_now
+
+
+def compute_cost(data, w, b):
+    m = len(data)
+    cost = 0.0
+    sqr_diff = 0.0
+    for i in range(m):
+        x = data.iloc[i]["SqFt"]
+        y = data.iloc[i]["Price"]
+        f_x = w * x + b
+        sqr_diff += (f_x - y) ** 2
+
+    cost = sqr_diff / (2 * m)
+    return cost
+
+
+def plot_cost(cost_arr):
+    plt.plot(range(len(cost_arr)), cost_arr, c="b")
+    plt.title("Cost Function")
+    plt.ylabel("Cost")
+    plt.xlabel("Iterations")
+    plt.show()
