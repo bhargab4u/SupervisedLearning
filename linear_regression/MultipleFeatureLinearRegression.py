@@ -25,19 +25,21 @@ def calculate_cost():
     y_train = actual_data[:, -1:]
     # print(x_train[:, 0])
 
-    J_cost = []
+    J_cost_history = []
     w = np.zeros(x_train.shape[1])
     b = 0.0
-    alpha = 0.001
-    epochs = 1000
+    alpha = 0.00001
+    epochs = 8000
 
     for k in range(epochs):
         if k % 100 == 0:
             print(f"Epochs : {k}")
         w, b = gradient_descent(w, b, x_train, y_train, alpha)
+        J_cost_history.append(compute_cost(x_train, y_train, w, b))
 
     print(w, b)
-    plot(x_train, y_train, w, b)
+    plot_cost(J_cost_history)
+    # plot(x_train, y_train, w, b)
 
 
 def compute_cost(x_train, y_train, w, b):
@@ -50,14 +52,26 @@ def compute_cost(x_train, y_train, w, b):
     return cost
 
 
+"""
 def plot(x_train, y_train, w, b):
     m, n = x_train.shape
-    f_x = np.zeros(m)
-    for i in range(m):
-        f_x[i] = np.dot(w, x_train[i]) + b
-    # print(f_x)
-    plt.scatter(x_train[:, 0], y_train, c="r", marker="x", label="Actual Values")
-    plt.plot(x_train[:, 0], f_x, c="b", label="Out Prediction")
+    for j in range(n):
+        f_x = np.zeros(m)
+        for i in range(m):
+            f_x[i] = w[j] * x_train[i : i + 1, j : j + 1] + b
+
+        # print(f_x)
+        plt.scatter(x_train[:, j], y_train, c="r", label="Actual Values")
+        plt.plot(x_train[:, j], f_x, c="b")
+        plt.show()
+"""
+
+
+def plot_cost(cost_arr):
+    plt.plot(cost_arr, range(len(cost_arr)), c="b")
+    plt.title("Cost Function")
+    plt.xlabel("Cost")
+    plt.ylabel("Iterations")
     plt.show()
 
 
