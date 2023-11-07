@@ -18,8 +18,12 @@ def logistic_regression():
     data["healthy"] = data["bmd"].apply(lambda x: 0 if x < decision_boundry else 1)
 
     # Feature Re-scaling
-    data["age"] = data["age"].div(10).round(8)
-    data["bmd"] = data["bmd"].mul(10).round(8)
+    age_mean = data["age"].mean()
+    age_std = data["age"].std()
+    bmd_mean = data["bmd"].mean()
+    bmd_std = data["bmd"].std()
+    data["age"] = data["age"].apply(lambda x: ((x - age_mean) / age_std))
+    data["bmd"] = data["bmd"].apply(lambda x: ((x - bmd_mean) / bmd_std))
 
     # pd.set_option("max_rows", None)
     x_train = data[["age", "bmd"]].to_numpy()
