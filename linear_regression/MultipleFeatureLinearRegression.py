@@ -5,7 +5,7 @@ import math
 
 
 def linear_regression():
-    data = pd.read_csv("house-prices.csv")
+    data = pd.read_csv("./linear_regression/house-prices.csv")
     data = data.astype(
         {
             "SqFt": "float64",

@@ -5,7 +5,7 @@ import math
 
 
 def linear_regression():
-    data = pd.read_csv("house-prices.csv")
+    data = pd.read_csv("./linear_regression/house-prices.csv")
     data = data.astype({"SqFt": "float64", "Price": "float64"})
     # data_normalized = data.copy(deep=True)
     data["Price"] = data["Price"].div(10000).round(4)
@@ -13,11 +13,11 @@ def linear_regression():
     J_cost_history = []
     w = 0.0
     b = 0.0
-    alpha = 0.001
+    alpha = 0.0001
     epochs = 3000
 
     for k in range(epochs):
-        if k % 1000 == 0:
+        if k % 100 == 0:
             print(f"Epochs : {k}")
         w, b = gradient_descent(w, b, data, alpha)
         J_cost_history.append(compute_cost(data, w, b))
