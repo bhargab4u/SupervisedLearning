@@ -45,7 +45,7 @@ def logistic_regression():
         J_cost_history.append(compute_cost(x_train, y_train, w, b))
 
     print(w, b)
-    # lrp.plot_cost(J_cost_history)
+    lrp.plot_cost(J_cost_history)
     lrp.plot_decision_boundary(x_train, y_train, w, b)
 
 

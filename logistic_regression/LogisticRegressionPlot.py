@@ -4,20 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import logistic_regression.LogisticRegression as lr
 
-dlc = dict(
-    dlblue="#0096ff",
-    dlorange="#FF9300",
-    dldarkred="#C00000",
-    dlmagenta="#FF40FF",
-    dlpurple="#7030A0",
-)
-dlblue = "#0096ff"
-dlorange = "#FF9300"
-dldarkred = "#C00000"
-dlmagenta = "#FF40FF"
-dlpurple = "#7030A0"
-dlcolors = [dlblue, dlorange, dldarkred, dlmagenta, dlpurple]
-
 
 def plot(x_train, y_train):
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -74,12 +60,26 @@ def plot_decision_boundary(x_train, y_train, w_out, b_out):
     # Plot the original data
     ax.set_ylabel(r"$x_1$")
     ax.set_xlabel(r"$x_0$")
-    # ax.axis([0, 4, 0, 3.5])
     plot_data(x_train, y_train, ax)
 
     # Plot the decision boundary
     x0 = -b_out / w_out[0]
     x1 = -b_out / w_out[1]
-    print(x0[0], x1[0])
-    ax.plot([4, x0[0]], [x1[0], 0], c=dlc["dlblue"], lw=1)
+
+    plot_line([0, x0[0]], [x1[0], 0], ax)
     plt.show()
+
+
+def plot_line(x, y, plt):
+    # Calculate the coefficients.
+    coefficients = np.polyfit(x, y, 1)
+
+    # Let's compute the values of the line...
+    polynomial = np.poly1d(coefficients)
+    x_axis = range(-3, 3)
+    y_axis = polynomial(x_axis)
+
+    # ...and plot the points and the line
+    plt.plot(x_axis, y_axis)
+    plt.plot(x[0], y[0], "go")
+    plt.plot(x[1], y[1], "go")
