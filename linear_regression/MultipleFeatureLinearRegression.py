@@ -15,9 +15,17 @@ def linear_regression():
             "Offers": "float64",
         }
     )
-    # data_normalized = data.copy(deep=True)
-    data["Price"] = data["Price"].div(100000).round(4)
-    data["SqFt"] = data["SqFt"].div(1000).round(2)
+
+    # Feature Re-scaling Z-Score
+    price_mean = data["Price"].mean()
+    price_std = data["Price"].std()
+    sqft_mean = data["SqFt"].mean()
+    sqft_std = data["SqFt"].std()
+    data["Price"] = data["Price"].apply(lambda x: ((x - price_mean) / price_std))
+    data["SqFt"] = data["SqFt"].apply(lambda x: ((x - sqft_mean) / sqft_std))
+
+    # data["Price"] = data["Price"].div(100000).round(4)
+    # data["SqFt"] = data["SqFt"].div(1000).round(2)
 
     actual_data = data[["SqFt", "Bedrooms", "Bathrooms", "Offers", "Price"]].to_numpy()
     # print(actual_data)
@@ -28,7 +36,7 @@ def linear_regression():
     J_cost_history = []
     w = np.zeros(x_train.shape[1])
     b = 0.0
-    alpha = 0.0001
+    alpha = 0.001
     epochs = 3000
 
     for k in range(epochs):
